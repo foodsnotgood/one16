@@ -1,26 +1,27 @@
 package be.johannesroeder.sixletterapi.helpers;
 
+
+
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.IIOException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileToListConverterTest {
 
-    private File file;
+    File file;
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    @Before
+   @Before
     public void setUpFile() {
         try {
             file = folder.newFile("testfile.txt");
@@ -37,8 +38,9 @@ public class FileToListConverterTest {
         bufferedWriter.close();
     }
     @Test
-    public void firstTest(){
-
+    public void firstTest() {
+        System.out.println(file.length());
+        assertTrue(file.exists());
        // List<String> list = FileToListConverter.convertToList(file);
     }
 }
