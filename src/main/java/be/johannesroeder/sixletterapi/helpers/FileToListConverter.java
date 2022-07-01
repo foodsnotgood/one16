@@ -10,10 +10,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class FileToListConverter {
 
+    private static final int MAX_LENGTH = 6;
     private static final Logger logger = LoggerFactory.getLogger(FileToListConverter.class);
     public static List<String> convertToList(MultipartFile file) {
         List<String> list = new ArrayList<>();
@@ -29,10 +31,19 @@ public class FileToListConverter {
     }
 
     public static List<String> separateSixLetterWords(MultipartFile file) {
-        return convertToList(file).stream().filter(word -> word.length() == 6).toList();
+        return convertToList(file).stream().filter(word -> word.length() == MAX_LENGTH).toList();
     }
 
     public static List<String> separateNonSixLetterWords(MultipartFile file) {
-        return convertToList(file).stream().filter(word -> word.length() < 6).toList();
+        return convertToList(file).stream().filter(word -> word.length() < MAX_LENGTH).toList();
+    }
+
+    public static HashMap<Integer, List<String>> mapNonSixLetters(List<String> nonSixLetters){
+        var map = new HashMap<Integer, List<String>>();
+        for (int i = 1; i < MAX_LENGTH; i++) {
+            int finalI = i;
+            map.put(i, nonSixLetters.stream().filter(w -> w.length() == finalI).toList());
+        }
+        return map;
     }
 }
