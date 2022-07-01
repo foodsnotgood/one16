@@ -31,8 +31,8 @@ public class FileToListConverter {
     public static List<String> separateSixLetterWords(MultipartFile file) {
         return convertToList(file).stream().filter(word -> word.length() == 6).toList();
     }
-    //seperate all 6 letter words from non 6 letter words
 
-
-
+    public static List<String> separateNonSixLetterWords(MultipartFile file) {
+        return convertToList(file).stream().filter(word -> word.length() < 6).toList();
+    }
 }
