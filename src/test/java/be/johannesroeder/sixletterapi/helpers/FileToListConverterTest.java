@@ -18,8 +18,9 @@ public class FileToListConverterTest {
     @Test
     public void firstTest() {
         MockMultipartFile file = buildMockFileWithWords("testing\nthe\nconverter");
+        List<String> testList = Arrays.asList("testing", "the", "converter");
         List<String> convertedList = FileToListConverter.convertToList(file);
-        assertEquals(3, convertedList.size());
+        assertEquals(testList, convertedList);
     }
 
     @Test
@@ -39,9 +40,9 @@ public class FileToListConverterTest {
     @Test
     public void separate_6letter_words_two_6letter_words() {
         MockMultipartFile file = buildMockFileWithWords("a\nan\nand\nabroad\naccept");
+        List<String> testList = Arrays.asList("abroad", "accept");
         List<String> sixLetterWords = FileToListConverter.separateSixLetterWords(file);
-        System.out.println(sixLetterWords);
-        assertEquals(2, sixLetterWords.size());
+        assertEquals(testList, sixLetterWords);
     }
 
     @Test
@@ -54,26 +55,29 @@ public class FileToListConverterTest {
     @Test
     public void separate_6letter_words_only_6letter_words() {
         MockMultipartFile file = buildMockFileWithWords("androi\ndandyl\nandrey\nsuperb\nnicest\nhealth\nduties\nhomesy\nworker");
+        List<String> testList = Arrays.asList("androi", "dandyl", "andrey", "superb", "nicest", "health", "duties", "homesy", "worker");
         List<String> sixLetterWords = FileToListConverter.separateSixLetterWords(file);
-        assertEquals(9, sixLetterWords.size());
+        assertEquals(testList, sixLetterWords);
     }
 
     @Test
     public void separate_non_6letter_words() {
         MockMultipartFile file = buildMockFileWithWords("a\nan\nand\nabroad\naccept");
+        List<String> testList = Arrays.asList("a", "an", "and");
         List<String> nonSixLetterWords = FileToListConverter.separateNonSixLetterWords(file);
-        assertEquals(3, nonSixLetterWords.size());
+        assertEquals(testList, nonSixLetterWords);
     }
 
     @Test
     public void one_word_less_then_6() {
         MockMultipartFile file = buildMockFileWithWords("test");
         List<String> convertedList = FileToListConverter.separateNonSixLetterWords(file);
-        assertEquals(1, convertedList.size());
+        List<String> mockList = List.of("test");
+        assertEquals(mockList, convertedList);
     }
 
     @Test
-    public void separate_empty_file() {
+    public void separate_non_6letters_with_empty_file() {
         MockMultipartFile file = buildMockFileWithWords("");
         List<String> convertedList = FileToListConverter.separateNonSixLetterWords(file);
         assertEquals(0, convertedList.size());
@@ -83,7 +87,13 @@ public class FileToListConverterTest {
     public void mapNon6LetterWords() {
         List<String> non6Letters = Arrays.asList("a","b","cc","dd","eee","ffff","ggggg");
         HashMap<Integer, List<String>> map = FileToListConverter.mapNonSixLetters(non6Letters);
-        System.out.println(map);
+        HashMap<Integer, List<String>> expectedMap = new HashMap<>();
+        expectedMap.put(1, Arrays.asList("a", "b"));
+        expectedMap.put(2, Arrays.asList("cc", "dd"));
+        expectedMap.put(3, List.of("eee"));
+        expectedMap.put(4, List.of("ffff"));
+        expectedMap.put(5, List.of("ggggg"));
+        assertEquals(expectedMap, map);
     }
 
     private MockMultipartFile buildMockFileWithWords(String words){
@@ -94,4 +104,5 @@ public class FileToListConverterTest {
                words.getBytes()
         );
     }
+
 }
