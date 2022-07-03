@@ -87,7 +87,7 @@ public class FileToListConverterTest {
     @Test
     public void mapNon6LetterWords() {
         List<String> non6Letters = Arrays.asList("a","b","cc","dd","eee","ffff","ggggg");
-        HashMap<Integer, List<String>> map = mapNonSixLetters(non6Letters);
+        HashMap<Integer, List<String>> map = mapByLength(non6Letters);
         HashMap<Integer, List<String>> expectedMap = new HashMap<>();
         expectedMap.put(1, Arrays.asList("a", "b"));
         expectedMap.put(2, Arrays.asList("cc", "dd"));
@@ -100,14 +100,14 @@ public class FileToListConverterTest {
     @Test
     public void mapNon6LetterWords_emptyList() {
         List<String> emptyList = new ArrayList<>();
-        HashMap<Integer, List<String>> map = mapNonSixLetters(emptyList);
+        HashMap<Integer, List<String>> map = mapByLength(emptyList);
         assertTrue(map.isEmpty());
     }
 
     @Test
     public void mapNon6LetterWords_ListWithEmptyStrings(){
         List<String> emptyStringsList = Arrays.asList("", "", "", "", "", "");
-        HashMap<Integer, List<String>> map = mapNonSixLetters(emptyStringsList);
+        HashMap<Integer, List<String>> map = mapByLength(emptyStringsList);
         assertTrue(map.isEmpty());
     }
 

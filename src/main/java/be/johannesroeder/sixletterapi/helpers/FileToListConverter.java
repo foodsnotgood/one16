@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FileToListConverter {
 
@@ -39,7 +38,7 @@ public class FileToListConverter {
         return convertToList(file).stream().filter(word -> word.length() < MAX_LENGTH).toList();
     }
 
-    public static HashMap<Integer, List<String>> mapNonSixLetters(List<String> nonSixLetters){
+    public static HashMap<Integer, List<String>> mapByLength(List<String> nonSixLetters){
         var map = new HashMap<Integer, List<String>>();
         if (nonSixLetters.isEmpty()) return map;
         int longestAmountChar = nonSixLetters.stream().sorted().toList().get(nonSixLetters.size()-1).length();
