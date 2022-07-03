@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileToListConverter {
 
@@ -40,7 +41,9 @@ public class FileToListConverter {
 
     public static HashMap<Integer, List<String>> mapNonSixLetters(List<String> nonSixLetters){
         var map = new HashMap<Integer, List<String>>();
-        for (int i = 1; i < MAX_LENGTH; i++) {
+        if (nonSixLetters.isEmpty()) return map;
+        int longestAmountChar = nonSixLetters.stream().sorted().toList().get(nonSixLetters.size()-1).length();
+        for (int i = 1; i <= longestAmountChar; i++) {
             int finalI = i;
             map.put(i, nonSixLetters.stream().filter(w -> w.length() == finalI).toList());
         }
