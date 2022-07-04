@@ -1,5 +1,6 @@
 package be.johannesroeder.sixletterapi.controllers;
 
+import static be.johannesroeder.sixletterapi.helpers.FileToListConverter.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,5 +30,13 @@ public class apiController {
                 .lines()
                 .forEach(list::add);
         return list;
+    }
+
+    @PostMapping(value = "/api/file")
+    public List<String> apiFile(@RequestParam MultipartFile file){
+        List<String> sixLetters = separateMaxLetterWords(file);
+        List<String> nonSixLetters = separateNonMaxLetterWords(file);
+        HashMap<Integer, List<String>> map = mapByLength(nonSixLetters);
+        return findValidCombinations(sixLetters, map);
     }
 }
