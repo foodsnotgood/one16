@@ -30,22 +30,35 @@ public class FileToListConverter {
         return list;
     }
 
-    public static List<String> separateSixLetterWords(MultipartFile file) {
+    public static List<String> separateMaxLetterWords(MultipartFile file) {
         return convertToList(file).stream().filter(word -> word.length() == MAX_LENGTH).toList();
     }
 
-    public static List<String> separateNonSixLetterWords(MultipartFile file) {
+    public static List<String> separateNonMaxLetterWords(MultipartFile file) {
         return convertToList(file).stream().filter(word -> word.length() < MAX_LENGTH).toList();
     }
 
-    public static HashMap<Integer, List<String>> mapByLength(List<String> nonSixLetters){
+    public static HashMap<Integer, List<String>> mapByLength(List<String> nonMaxLetters){
         var map = new HashMap<Integer, List<String>>();
-        if (nonSixLetters.isEmpty()) return map;
-        int longestAmountChar = nonSixLetters.stream().sorted().toList().get(nonSixLetters.size()-1).length();
+        if (nonMaxLetters.isEmpty()) return map;
+        int longestAmountChar = nonMaxLetters.stream().sorted().toList().get(nonMaxLetters.size()-1).length();
         for (int i = 1; i <= longestAmountChar; i++) {
             int finalI = i;
-            map.put(i, nonSixLetters.stream().filter(w -> w.length() == finalI).toList());
+            map.put(i, nonMaxLetters.stream().filter(w -> w.length() == finalI).toList());
         }
         return map;
+    }
+
+    public static List<String> findValidCombinations(List<String> validList, HashMap<Integer, List<String>> mapByLength) {
+        List<String> combinedWords = new ArrayList<>(validList.size());
+        mapByLength.forEach((k, list) -> {
+            List<String> matchingList = mapByLength.get(MAX_LENGTH - k);
+            list.forEach(s1 -> {
+                matchingList.forEach(s2 -> {
+                    if (validList.contains(s1 + s2)) combinedWords.add(s1+s2);
+                });
+            });
+        });
+        return combinedWords;
     }
 }
