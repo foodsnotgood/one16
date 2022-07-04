@@ -122,8 +122,20 @@ public class FileToListConverterTest {
         mapByLength.put(4, List.of("able", "iver"));
         mapByLength.put(5, List.of("broad", "omain"));
         List<String> computedList = findValidCombinations(validList, mapByLength);
-        System.out.println(computedList);
         assertEquals(validList, computedList.stream().sorted().toList());
+    }
+
+    @Test
+    public void findValidCombinationsTest_noValidCombinations(){
+        List<String> validList = Stream.of("abroad", "domain", "enable", "driver", "engage").sorted().toList();
+        HashMap<Integer, List<String>> mapByLength = new HashMap<>();
+        mapByLength.put(1, List.of("w", "t"));
+        mapByLength.put(2,List.of("we", "qw"));
+        mapByLength.put(3, List.of("qwe", "rty"));
+        mapByLength.put(4, List.of("ghjk", "asdf"));
+        mapByLength.put(5, List.of("zxcvb", "mkonj"));
+        List<String> computedList = findValidCombinations(validList, mapByLength);
+        assertTrue(computedList.isEmpty());
     }
 
     private MockMultipartFile buildMockFileWithWords(String words){
