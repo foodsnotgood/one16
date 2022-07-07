@@ -30,12 +30,12 @@ public class FileToListConverter {
         return list;
     }
 
-    public static List<String> separateMaxLetterWords(MultipartFile file) {
-        return convertToList(file).stream().filter(word -> word.length() == COMBINATION_LENGTH).toList();
+    public static List<String> separateMaxLetterWords(List<String> input) {
+        return input.stream().filter(word -> word.length() == COMBINATION_LENGTH).toList();
     }
 
-    public static List<String> separateNonMaxLetterWords(MultipartFile file) {
-        return convertToList(file).stream().filter(word -> word.length() < COMBINATION_LENGTH).toList();
+    public static List<String> separateNonMaxLetterWords(List<String> input) {
+        return input.stream().filter(word -> word.length() < COMBINATION_LENGTH).toList();
     }
 
     public static HashMap<Integer, List<String>> mapByLength(List<String> nonMaxLetters){

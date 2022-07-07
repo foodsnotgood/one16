@@ -34,54 +34,47 @@ public class FileToListConverterTest {
 
     @Test
     public void one_word_more_then_6() {
-        MockMultipartFile file = buildMockFileWithWords("testers");
-        List<String> convertedList = separateMaxLetterWords(file);
+        List<String> convertedList = separateMaxLetterWords(List.of("testers"));
         assertEquals(0, convertedList.size());
     }
 
     @Test
     public void separate_6letter_words_two_6letter_words() {
-        MockMultipartFile file = buildMockFileWithWords("a\nan\nand\nabroad\naccept");
         List<String> testList = List.of("abroad", "accept");
-        List<String> sixLetterWords = separateMaxLetterWords(file);
+        List<String> sixLetterWords = separateMaxLetterWords(List.of("a","an","and","abroad","accept"));
         assertEquals(testList, sixLetterWords);
     }
 
     @Test
     public void separate_6letter_words_no_6letter_words() {
-        MockMultipartFile file = buildMockFileWithWords("a\nan\nand\nsuper\nnice\nheavy\nduty\nhome\nwork");
-        List<String> sixLetterWords = separateMaxLetterWords(file);
+        List<String> sixLetterWords = separateMaxLetterWords(List.of("a","an","and","super","nice","heavy","duty","home","work"));
         assertEquals(0, sixLetterWords.size());
     }
 
     @Test
     public void separate_6letter_words_only_6letter_words() {
-        MockMultipartFile file = buildMockFileWithWords("androi\ndandyl\nandrey\nsuperb\nnicest\nhealth\nduties\nhomesy\nworker");
         List<String> testList = List.of("androi", "dandyl", "andrey", "superb", "nicest", "health", "duties", "homesy", "worker");
-        List<String> sixLetterWords = separateMaxLetterWords(file);
+        List<String> sixLetterWords = separateMaxLetterWords(List.of("androi","dandyl","andrey","superb","nicest","health","duties","homesy","worker"));
         assertEquals(testList, sixLetterWords);
     }
 
     @Test
     public void separate_non_6letter_words() {
-        MockMultipartFile file = buildMockFileWithWords("a\nan\nand\nabroad\naccept");
         List<String> testList = List.of("a", "an", "and");
-        List<String> nonMaxLetterWords = separateNonMaxLetterWords(file);
+        List<String> nonMaxLetterWords = separateNonMaxLetterWords(List.of("a","an","and","abroad","accept"));
         assertEquals(testList, nonMaxLetterWords);
     }
 
     @Test
     public void one_word_less_then_6() {
-        MockMultipartFile file = buildMockFileWithWords("test");
-        List<String> convertedList = separateNonMaxLetterWords(file);
+        List<String> convertedList = separateNonMaxLetterWords(List.of("test"));
         List<String> mockList = List.of("test");
         assertEquals(mockList, convertedList);
     }
 
     @Test
-    public void separate_non_6letters_with_empty_file() {
-        MockMultipartFile file = buildMockFileWithWords("");
-        List<String> convertedList = separateNonMaxLetterWords(file);
+    public void separate_non_6letters_with_empty_list() {
+        List<String> convertedList = separateNonMaxLetterWords(List.of(""));
         assertEquals(0, convertedList.size());
     }
 
@@ -109,7 +102,7 @@ public class FileToListConverterTest {
     public void mapByLength_ListWithEmptyStrings(){
         List<String> emptyStringsList = List.of("", "", "", "", "", "");
         HashMap<Integer, List<String>> map = mapByLength(emptyStringsList);
-        assertTrue(map.isEmpty());
+        assertTrue(map.values().stream().allMatch(List::isEmpty));
     }
 
     @Test
