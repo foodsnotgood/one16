@@ -2,14 +2,13 @@ package be.johannesroeder.sixletterapi.converter;
 
 import be.johannesroeder.sixletterapi.wrapper.InputWrapper;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class txtToListConverter implements ItoListConverter {
+public class TxtToListConverter implements ItoListConverter {
 
     private final String input;
-    public txtToListConverter(InputWrapper input) {
+    public TxtToListConverter(InputWrapper input) {
         this.input = input.getInputText();
     }
 

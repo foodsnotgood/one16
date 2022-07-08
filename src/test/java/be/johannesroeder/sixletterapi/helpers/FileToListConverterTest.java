@@ -2,35 +2,17 @@ package be.johannesroeder.sixletterapi.helpers;
 
 
 import org.junit.Test;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static be.johannesroeder.sixletterapi.helpers.FileToListConverter.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileToListConverterTest {
-
-    @Test
-    public void firstTest() {
-        MockMultipartFile file = buildMockFileWithWords("testing\nthe\nconverter");
-        List<String> testList = List.of("testing", "the", "converter");
-        List<String> convertedList = convertToList(file);
-        assertEquals(testList, convertedList);
-    }
-
-    @Test
-    public void emptyFile() {
-        MockMultipartFile file = buildMockFileWithWords("");
-        List<String> convertedList = convertToList(file);
-        assertEquals(0, convertedList.size());
-    }
 
     @Test
     public void one_word_more_then_6() {
@@ -130,14 +112,4 @@ public class FileToListConverterTest {
         List<String> computedList = findValidCombinations(validList, mapByLength);
         assertTrue(computedList.isEmpty());
     }
-
-    private MockMultipartFile buildMockFileWithWords(String words){
-        return new MockMultipartFile(
-                "file",
-                "mock.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-               words.getBytes()
-        );
-    }
-
 }

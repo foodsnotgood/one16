@@ -1,14 +1,10 @@
 package be.johannesroeder.sixletterapi.controllers;
 
-import static be.johannesroeder.sixletterapi.helpers.FileToListConverter.*;
-
 import be.johannesroeder.sixletterapi.converter.ItoListConverter;
 import be.johannesroeder.sixletterapi.factory.ToListConverterFactory;
 import be.johannesroeder.sixletterapi.wrapper.InputWrapper;
-import lombok.SneakyThrows;
 import org.apache.tika.Tika;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,12 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
+
+import static be.johannesroeder.sixletterapi.helpers.FileToListConverter.*;
 
 @RestController
 public class apiController {
@@ -51,7 +51,7 @@ public class apiController {
             String fileType = tika.detect(file.getBytes());
             System.out.println(fileType);
             InputWrapper input = new InputWrapper(file);
-            ItoListConverter converter = ToListConverterFactory.getToListConverter(fileType, input);
+            ItoListConverter converter = ToListConverterFactory.getConverter(fileType, input);
             convertedList = converter.convertToList();
         } catch (IOException e) {
             throw new ResponseStatusException(

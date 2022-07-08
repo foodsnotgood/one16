@@ -19,17 +19,12 @@ public class TxtFileToListConverter implements ItoListConverter {
     }
 
     @Override
-    public List<String> convertToList() {
+    public List<String> convertToList() throws IOException {
         List<String> list = new ArrayList<>();
-        try {
             InputStream inputStream = this.input.getInputStream();
             new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
                     .lines()
                     .forEach(list::add);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return list;
     }
 }

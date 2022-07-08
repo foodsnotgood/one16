@@ -2,15 +2,15 @@ package be.johannesroeder.sixletterapi.converter;
 
 import be.johannesroeder.sixletterapi.wrapper.InputWrapper;
 
+import java.io.IOException;
 import java.util.List;
 
 public class csvFileToListConverter implements ItoListConverter {
     public csvFileToListConverter(InputWrapper input) {
     }
 
-
     @Override
-    public List<String> convertToList() {
+    public List<String> convertToList() throws IOException {
         return null;
     }
 }
