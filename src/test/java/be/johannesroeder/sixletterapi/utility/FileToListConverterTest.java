@@ -1,4 +1,4 @@
-package be.johannesroeder.sixletterapi.helpers;
+package be.johannesroeder.sixletterapi.utility;
 
 
 import org.junit.Test;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static be.johannesroeder.sixletterapi.helpers.FileToListConverter.*;
+import static be.johannesroeder.sixletterapi.utility.FileToListConverter.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -1,4 +1,4 @@
-package be.johannesroeder.sixletterapi.helpers;
+package be.johannesroeder.sixletterapi.utility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

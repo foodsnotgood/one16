@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static be.johannesroeder.sixletterapi.helpers.FileToListConverter.*;
+import static be.johannesroeder.sixletterapi.utility.FileToListConverter.*;
 
 @RestController
 public class apiController {
