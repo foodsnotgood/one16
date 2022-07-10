@@ -1,16 +1,12 @@
 package be.johannesroeder.sixletterapi.utility;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FileToListConverter {
+public class TheFunPartUtils {
 
     private static final int COMBINATION_LENGTH = 6;
-    private static final Logger logger = LoggerFactory.getLogger(FileToListConverter.class);
 
     public static List<String> separateMaxLetterWords(List<String> input) {
         return input.stream().filter(word -> word.length() == COMBINATION_LENGTH).toList();

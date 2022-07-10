@@ -11,12 +11,12 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileUtilitiesTest {
+class FileUtilsTest {
 
     @Test
     void multipartToFileTest() throws IOException {
         MockMultipartFile mockFile = buildMockFileWithStringContent("test");
-        File convertedFile = FileUtilities.multipartToFile(mockFile, "txt");
+        File convertedFile = FileUtils.multipartToFile(mockFile);
         assertTrue(convertedFile.isFile());
         convertedFile.delete();
     }
@@ -24,7 +24,7 @@ class FileUtilitiesTest {
     @Test
     void multipartToFile_ContentTest() throws IOException {
         MockMultipartFile mockFile = buildMockFileWithStringContent("test with content");
-        File convertedFile = FileUtilities.multipartToFile(mockFile, "txt");
+        File convertedFile = FileUtils.multipartToFile(mockFile);
         BufferedReader reader = new BufferedReader(new FileReader(convertedFile));
         String content = reader.readLine();
         assertEquals("test with content", content);
@@ -34,7 +34,7 @@ class FileUtilitiesTest {
     @Test
     void multipartToFile_emptyTest() throws IOException {
         MockMultipartFile mockFile = buildMockFileWithStringContent("");
-        File convertedFile = FileUtilities.multipartToFile(mockFile, "txt");
+        File convertedFile = FileUtils.multipartToFile(mockFile);
         BufferedReader reader = new BufferedReader(new FileReader(convertedFile));
         String content = reader.readLine();
         assertNull(content);

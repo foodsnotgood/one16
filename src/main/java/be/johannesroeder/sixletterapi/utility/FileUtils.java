@@ -6,13 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
-public class FileUtilities {
-    public static File multipartToFile(MultipartFile multipartFile, String extension) throws IOException {
+public class FileUtils {
+    public static File multipartToFile(MultipartFile multipartFile) throws IOException {
         File convertedFile = new File(System.getProperty("java.io.tmpdir")
                 +"/"
-                + RandomStringUtils.random(10, true, true)
-                + "."
-                + extension);
+                + RandomStringUtils.random(10, true, true));
         multipartFile.transferTo(convertedFile);
         return convertedFile;
     }

@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static be.johannesroeder.sixletterapi.utility.FileToListConverter.*;
+import static be.johannesroeder.sixletterapi.utility.TheFunPartUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FileToListConverterTest {
+public class TheFunPartUtilsTest {
 
     @Test
     public void one_word_more_then_6() {

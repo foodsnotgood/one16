@@ -2,8 +2,9 @@ package be.johannesroeder.sixletterapi.controllers;
 
 import be.johannesroeder.sixletterapi.converter.ItoListConverter;
 import be.johannesroeder.sixletterapi.factory.ToListConverterFactory;
+import be.johannesroeder.sixletterapi.utility.FileUtils;
 import be.johannesroeder.sixletterapi.wrapper.InputWrapper;
-import org.apache.tika.Tika;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static be.johannesroeder.sixletterapi.utility.FileToListConverter.*;
+import static be.johannesroeder.sixletterapi.utility.TheFunPartUtils.*;
 
 @RestController
 public class apiController {
@@ -47,25 +48,22 @@ public class apiController {
         if (file.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted file seems to be empty");
         List<String> convertedList;
         try {
-            Tika tika = new Tika();
-            String fileType = tika.detect(file.getBytes());
-            System.out.println(fileType);
-            InputWrapper input = new InputWrapper(file);
+            InputWrapper input = new InputWrapper(FileUtils.multipartToFile(file));
+            String fileType = FilenameUtils.getExtension(file.getOriginalFilename());
             ItoListConverter converter = ToListConverterFactory.getConverter(fileType, input);
             convertedList = converter.convertToList();
         } catch (IOException e) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Something went wrong trying to reading the file"
+                    HttpStatus.BAD_REQUEST, e.getMessage()
             );
         }
         List<String> sixLetters = separateMaxLetterWords(convertedList);
-        List<String> nonSixLetters = separateNonMaxLetterWords(convertedList);
-        HashMap<Integer, List<String>> map = mapByLength(nonSixLetters);
-        return findValidCombinations(sixLetters, map);
+        HashMap<Integer, List<String>> mapByLength = mapByLength(separateNonMaxLetterWords(convertedList));
+        return findValidCombinations(sixLetters, mapByLength);
     }
 
-//    @PostMapping(value = "/api/file")
-//    public List<String> apiFile(@RequestParam String words){
-//        return new ArrayList<>();
-//    }
+    @PostMapping(value = "/api/string")
+    public List<String> apiFile(@RequestParam String input){
+        return new ArrayList<>();
+    }
 }

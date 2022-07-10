@@ -1,7 +1,9 @@
 package be.johannesroeder.sixletterapi.converter;
 
+import be.johannesroeder.sixletterapi.expeptions.EmptyInputException;
 import be.johannesroeder.sixletterapi.wrapper.InputWrapper;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,7 +15,8 @@ public class TxtToListConverter implements ItoListConverter {
     }
 
     @Override
-    public List<String> convertToList() {
+    public List<String> convertToList() throws IOException {
+        if (input.isEmpty()) throw new EmptyInputException("Input does not contain any text");
         return Arrays.stream(this.input.split("\n")).toList();
     }
 }

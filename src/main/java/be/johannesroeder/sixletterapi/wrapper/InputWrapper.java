@@ -5,10 +5,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 
 public class InputWrapper {
-    private MultipartFile inputFile;
+    private File inputFile;
     private String inputText;
 
-    public InputWrapper(MultipartFile inputFile) {
+    public InputWrapper(File inputFile) {
         this.inputFile = inputFile;
     }
 
@@ -16,11 +16,11 @@ public class InputWrapper {
         this.inputText = inputText;
     }
 
-    public MultipartFile getInputFile() {
+    public File getInputFile() {
         return inputFile;
     }
 
     public String getInputText() {
-        return inputText;
+        return inputText == null ? "" : inputText;
     }
 }
