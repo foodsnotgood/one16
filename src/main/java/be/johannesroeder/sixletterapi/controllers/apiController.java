@@ -47,23 +47,34 @@ public class apiController {
     public List<String> apiFile(@RequestParam MultipartFile file){
         if (file.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The submitted file seems to be empty");
         List<String> convertedList;
+
         try {
             InputWrapper input = new InputWrapper(FileUtils.multipartToFile(file));
             String fileType = FilenameUtils.getExtension(file.getOriginalFilename());
-            ItoListConverter converter = ToListConverterFactory.getConverter(fileType, input);
+            var converter = ToListConverterFactory.getConverter(fileType, input);
             convertedList = converter.convertToList();
         } catch (IOException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, e.getMessage()
-            );
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-        List<String> sixLetters = separateMaxLetterWords(convertedList);
-        HashMap<Integer, List<String>> mapByLength = mapByLength(separateNonMaxLetterWords(convertedList));
-        return findValidCombinations(sixLetters, mapByLength);
+        return getValidCombinations(convertedList);
     }
 
     @PostMapping(value = "/api/string")
-    public List<String> apiFile(@RequestParam String input){
-        return new ArrayList<>();
+    public List<String> apiFile(@RequestParam String inputText) {
+        List<String> convertedList;
+        try {
+            InputWrapper input = new InputWrapper(inputText);
+            var converter = ToListConverterFactory.getConverter("string", input);
+            convertedList = converter.convertToList();
+        } catch (IOException e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+        return getValidCombinations(convertedList);
+    }
+
+    private List<String> getValidCombinations(List<String> list){
+        var sixLetters = separateMaxLetterWords(list);
+        var mapByLength = mapByLength(separateNonMaxLetterWords(list));
+        return findValidCombinations(sixLetters, mapByLength);
     }
 }

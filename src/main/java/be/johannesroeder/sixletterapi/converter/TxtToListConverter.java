@@ -17,6 +17,6 @@ public class TxtToListConverter implements ItoListConverter {
     @Override
     public List<String> convertToList() throws IOException {
         if (input.isEmpty()) throw new EmptyInputException("Input does not contain any text");
-        return Arrays.stream(this.input.split("\n")).toList();
+        return Arrays.stream(this.input.split("\n")).map(String::trim).toList();
     }
 }
