@@ -2,21 +2,18 @@ package be.johannesroeder.sixletterapi.controllers;
 
 import be.johannesroeder.sixletterapi.converter.ItoListConverter;
 import be.johannesroeder.sixletterapi.factory.ToListConverterFactory;
+import be.johannesroeder.sixletterapi.model.Word;
+import be.johannesroeder.sixletterapi.repository.WordRepository;
 import be.johannesroeder.sixletterapi.utility.FileUtils;
 import be.johannesroeder.sixletterapi.wrapper.InputWrapper;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,21 +24,8 @@ import static be.johannesroeder.sixletterapi.utility.TheFunPartUtils.*;
 @RestController
 public class apiController {
 
-    @GetMapping("test")
-    public String test(){
-        return "it is working";
-    }
-
-    @PostMapping(value = "/api")
-    public List<String> api(@RequestParam MultipartFile file) throws IOException {
-        List<String> list = new ArrayList<>();
-        InputStream inputStream = file.getInputStream();
-        new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
-                .lines()
-                .forEach(list::add);
-        return list;
-    }
-
+    @Autowired
+    private WordRepository repository;
 
     @PostMapping(path = "/api/file")
     public List<String> apiFile(@RequestParam MultipartFile file){
@@ -49,18 +33,25 @@ public class apiController {
         List<String> convertedList;
 
         try {
-            InputWrapper input = new InputWrapper(FileUtils.multipartToFile(file));
+            File tmpFile = FileUtils.multipartToFile(file);
+            InputWrapper input = new InputWrapper(tmpFile);
             String fileType = FilenameUtils.getExtension(file.getOriginalFilename());
             var converter = ToListConverterFactory.getConverter(fileType, input);
             convertedList = converter.convertToList();
+            tmpFile.delete();
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-        return getValidCombinations(convertedList);
+
+        List<String> validList = getValidCombinations(convertedList);
+        validList.forEach(w -> repository.save(new Word(w)));
+
+        return validList;
     }
 
     @PostMapping(value = "/api/string")
-    public List<String> apiFile(@RequestParam String inputText) {
+    public List<String> apiString(@RequestBody String inputText) {
         List<String> convertedList;
         try {
             InputWrapper input = new InputWrapper(inputText);
@@ -69,7 +60,11 @@ public class apiController {
         } catch (IOException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-        return getValidCombinations(convertedList);
+
+        List<String> validList = getValidCombinations(convertedList);
+        validList.forEach(w -> repository.save(new Word(w)));
+
+        return validList;
     }
 
     private List<String> getValidCombinations(List<String> list){

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TheFunPartUtils {
 
-    private static final int COMBINATION_LENGTH = 6;
+    public static final int COMBINATION_LENGTH = 6;
 
     public static List<String> separateMaxLetterWords(List<String> input) {
         return input.stream().filter(word -> word.length() == COMBINATION_LENGTH).toList();

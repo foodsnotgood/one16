@@ -1,5 +1,6 @@
 package be.johannesroeder.sixletterapi.wrapper;
 
+import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
