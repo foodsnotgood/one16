@@ -34,10 +34,10 @@ public class apiController {
 
         try {
             File tmpFile = FileUtils.multipartToFile(file);
-            InputWrapper input = new InputWrapper(tmpFile);
+            InputWrapper<File> input = new InputWrapper<>(tmpFile);
             String fileType = FilenameUtils.getExtension(file.getOriginalFilename());
-            var converter = ToListConverterFactory.getConverter(fileType, input);
-            convertedList = converter.convertToList();
+            var converter = ToListConverterFactory.getConverter(fileType);
+            convertedList = converter.convertToList(input);
             tmpFile.delete();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -54,9 +54,9 @@ public class apiController {
     public List<String> apiString(@RequestBody String inputText) {
         List<String> convertedList;
         try {
-            InputWrapper input = new InputWrapper(inputText);
-            var converter = ToListConverterFactory.getConverter("string", input);
-            convertedList = converter.convertToList();
+            InputWrapper<String> input = new InputWrapper<>(inputText);
+            var converter = ToListConverterFactory.getConverter("string");
+            convertedList = converter.convertToList(input);
         } catch (IOException e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }

@@ -1,19 +1,15 @@
 package be.johannesroeder.sixletterapi.factory;
 
-import be.johannesroeder.sixletterapi.converter.ItoListConverter;
-import be.johannesroeder.sixletterapi.converter.TxtFileToListConverter;
-import be.johannesroeder.sixletterapi.converter.CsvFileToListConverter;
-import be.johannesroeder.sixletterapi.converter.TxtToListConverter;
-import be.johannesroeder.sixletterapi.wrapper.InputWrapper;
+import be.johannesroeder.sixletterapi.converter.*;
 
 import java.io.IOException;
 
 public class ToListConverterFactory {
-    public static ItoListConverter getConverter(String mediaType, InputWrapper input) throws IOException {
+    public static  ItoListConverter getConverter(String mediaType) throws IOException {
         return switch (mediaType) {
-            case "txt" -> new TxtFileToListConverter(input);
-            case "csv" -> new CsvFileToListConverter(input);
-            case "string" -> new TxtToListConverter(input);
+            case "txt" -> new TxtFileToListConverter();
+            case "csv" -> new CsvFileToListConverter();
+            case "string" -> new TxtToListConverter();
             default -> throw new IOException("Unexpected filetype: " + mediaType);
         };
     }

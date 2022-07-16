@@ -7,16 +7,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class TxtToListConverter implements ItoListConverter {
+public class TxtToListConverter implements ItoListConverter<String> {
 
-    private final String input;
-    public TxtToListConverter(InputWrapper input) {
-        this.input = input.getInputText();
-    }
 
     @Override
-    public List<String> convertToList() throws IOException {
-        if (input.isEmpty()) throw new EmptyInputException("Input does not contain any text");
-        return Arrays.stream(this.input.split("\n")).map(String::trim).toList();
+    public List<String> convertToList(InputWrapper<String> input) throws IOException {
+        if (input.input().isEmpty()) throw new EmptyInputException("Input does not contain any text");
+        return Arrays.stream(input.input().split("\n")).map(String::trim).toList();
     }
 }

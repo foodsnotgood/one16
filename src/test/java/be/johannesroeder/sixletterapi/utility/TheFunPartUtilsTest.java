@@ -109,7 +109,7 @@ public class TheFunPartUtilsTest {
         mapByLength.put(3, List.of("qwe", "rty"));
         mapByLength.put(4, List.of("ghjk", "asdf"));
         mapByLength.put(5, List.of("zxcvb", "mkonj"));
-        List<String> computedList = findValidCombinations(validList, mapByLength);
-        assertTrue(computedList.isEmpty());
+        List<String> listWithValidCombinations = findValidCombinations(validList, mapByLength);
+        assertTrue(listWithValidCombinations.isEmpty());
     }
 }

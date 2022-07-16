@@ -9,40 +9,46 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CsvFileToListConverterTest {
 
     @Test
     void convertToListTest() throws IOException {
         MockMultipartFile file = buildMockFileWithWords("1;testing\n2;the\n3;converter");
-        CsvFileToListConverter converter = new CsvFileToListConverter(new InputWrapper(FileUtils.multipartToFile(file)));
-        List<String> convertedList = converter.convertToList();
+        CsvFileToListConverter converter = new CsvFileToListConverter();
+        List<String> convertedList = converter.convertToList(new InputWrapper<>(FileUtils.multipartToFile(file)));
         List<String> testList = List.of("testing", "the", "converter");
         assertEquals(testList, convertedList);
     }
 
     @Test
     public void throwEmptyInputExceptionWhenInputIsEmpty() throws IOException {
-        MockMultipartFile file = buildMockFileWithWords("");
-        CsvFileToListConverter converter = new CsvFileToListConverter(new InputWrapper(FileUtils.multipartToFile(file)));
-        assertThrows(EmptyInputException.class, converter::convertToList);
+        MockMultipartFile multipartFile = buildMockFileWithWords("");
+        var converter = new CsvFileToListConverter();
+        var input = new InputWrapper<>(FileUtils.multipartToFile(multipartFile));
+        assertThrows(EmptyInputException.class, () -> converter.convertToList(input));
+
     }
 
     @Test
-    public void throwIOErrorWhenInputIsNull(){
-        CsvFileToListConverter converter = new CsvFileToListConverter(new InputWrapper(new File("random")));
-        assertThrows(IOException.class, converter::convertToList);
+    public void throwIOErrorWhenInputIsNull() {
+        var converter = new CsvFileToListConverter();
+        var input = new InputWrapper<>(new File("testNull"));
+        assertThrows(FileNotFoundException.class, () -> converter.convertToList(input));
     }
 
     @Test
     public void throwIOErrorWhenDelimiterIsUnexpected() throws IOException {
-        MockMultipartFile file = buildMockFileWithWords("1,testing\n2,the\n3,converter");
-        CsvFileToListConverter converter = new CsvFileToListConverter(new InputWrapper(FileUtils.multipartToFile(file)));
-        assertThrows(WrongDelimiterException.class, converter::convertToList);
+        MockMultipartFile multipartFile = buildMockFileWithWords("1,testing\n2,the\n3,converter");
+        var converter = new CsvFileToListConverter();
+        var input = new InputWrapper<>(FileUtils.multipartToFile(multipartFile));
+        assertThrows(WrongDelimiterException.class, () -> converter.convertToList(new InputWrapper<>(FileUtils.multipartToFile(multipartFile))));
     }
 
     private MockMultipartFile buildMockFileWithWords(String words){

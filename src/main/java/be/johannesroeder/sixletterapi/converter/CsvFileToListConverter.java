@@ -11,17 +11,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvFileToListConverter implements ItoListConverter {
+public class CsvFileToListConverter implements ItoListConverter<File> {
 
-    private final File INPUT_CSV;
     private final String DELIMITER = ";";
-    public CsvFileToListConverter(InputWrapper input) {
-        this.INPUT_CSV = input.getInputFile();
-    }
 
     @Override
-    public List<String> convertToList() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(INPUT_CSV));
+    public List<String> convertToList(InputWrapper<File> input) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(input.input()));
         List<String> convertedList = new ArrayList<>();
         String line;
         while((line = reader.readLine()) != null){
