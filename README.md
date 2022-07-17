@@ -9,7 +9,6 @@ To run the app you can use following command:
 ```
 docker run -p8080:8080 foodsnotgood/sixletterapi
 ```
-
 In case the port 8080 is already occupied on your machine you can use a different (i.e. 8081)
 
 ```
