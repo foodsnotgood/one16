@@ -1,5 +1,7 @@
 package be.johannesroeder.sixletterapi.utility;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
