@@ -1,6 +1,6 @@
 package be.johannesroeder.sixletterapi.converter;
 
-import be.johannesroeder.sixletterapi.expeptions.EmptyInputException;
+import be.johannesroeder.sixletterapi.exceptions.EmptyInputException;
 import be.johannesroeder.sixletterapi.wrapper.InputWrapper;
 
 import java.io.IOException;

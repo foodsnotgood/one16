@@ -1,4 +1,4 @@
-package be.johannesroeder.sixletterapi.expeptions;
+package be.johannesroeder.sixletterapi.exceptions;
 
 import java.io.IOException;
 
